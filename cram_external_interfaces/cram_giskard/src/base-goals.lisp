@@ -58,12 +58,14 @@
                      (make-diffdrive-base-goal
                       cram-tf:*odom-frame* cram-tf:*robot-base-frame* pose
                       :avoid-collisions-much t
-                      :max-velocity *base-max-velocity-fast-xy*
+                      :max-lin-velocity *base-max-velocity-fast-xy*
+                      :max-ang-velocity *base-max-velocity-fast-theta*
                       :always-forward nil)
                      (make-cartesian-constraint
                       cram-tf:*odom-frame* cram-tf:*robot-base-frame* pose
                       :avoid-collisions-much t
-                      :max-velocity *base-max-velocity-fast-xy*))
+                      :max-lin-velocity *base-max-velocity-fast-xy*
+                      :max-ang-velocity *base-max-velocity-slow-theta*))
                  (when (eq (rob-int:get-environment-name) :iai-kitchen)
                    (make-base-collision-avoidance-hint-constraint
                     *base-collision-avoidance-hint-link*

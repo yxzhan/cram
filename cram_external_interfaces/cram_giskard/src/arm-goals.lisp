@@ -187,7 +187,8 @@
                   (cl-transforms-stamped:pose->pose-stamped
                    cram-tf:*robot-base-frame* 0.0
                    (cl-transforms:make-identity-pose))
-                  :max-velocity *base-max-velocity-slow-xy*
+                  :max-lin-velocity *base-max-velocity-slow-xy*
+                  :max-ang-velocity *base-max-velocity-slow-theta*
                   :avoid-collisions-much nil)
                  (when align-planes-left
                    (make-align-planes-tool-frame-constraint
