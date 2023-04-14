@@ -348,11 +348,10 @@
          . ,root-link))))))
 
 (defun make-cartesian-constraint (root-frame tip-frame goal-pose
-                                  &key max-lin-velocity max-ang-velocity
-                                    avoid-collisions-much straight-line)
+                                  &key max-velocity avoid-collisions-much straight-line)
   (declare (type string root-frame tip-frame)
            (type cl-transforms-stamped:pose-stamped goal-pose)
-           (type (or number null) max-lin-velocity max-ang-velocity)
+           (type (or number null) max-velocity)
            (type boolean avoid-collisions-much straight-line))
   (roslisp:make-message
    'giskard_msgs-msg:constraint
@@ -367,10 +366,8 @@
       ("goal_pose"
        . (("message_type" . "geometry_msgs/PoseStamped")
           ("message" . ,(to-hash-table goal-pose))))
-      ,@(when max-lin-velocity
-          `(("reference_linear_velocity" . ,max-lin-velocity)))
-      ,@(when max-ang-velocity
-          `(("reference_angular_velocity" . ,max-ang-velocity)))
+      ,@(when max-velocity
+          `(("reference_velocity" . ,max-velocity)))
       ,@(if avoid-collisions-much
             `(("weight" . ,(roslisp-msg-protocol:symbol-code
                             'giskard_msgs-msg:constraint
@@ -382,11 +379,10 @@
                             ))))))))
 
 (defun make-diffdrive-base-goal (root-frame tip-frame goal-pose
-                                 &key max-lin-velocity max-ang-velocity
-                                   avoid-collisions-much always-forward)
+                                 &key max-velocity avoid-collisions-much always-forward)
   (declare (type string root-frame tip-frame)
            (type cl-transforms-stamped:pose-stamped goal-pose)
-           (type (or number null) max-lin-velocity max-ang-velocity)
+           (type (or number null) max-velocity)
            (type boolean avoid-collisions-much always-forward))
   (roslisp:make-message
    'giskard_msgs-msg:constraint
@@ -401,10 +397,8 @@
           ("message" . ,(to-hash-table goal-pose))))
       ,@(when always-forward
           `(("always_forward" . T)))
-      ,@(when max-lin-velocity
-          `(("reference_linear_velocity" . ,max-lin-velocity)))
-      ,@(when max-ang-velocity
-          `(("reference_angular_velocity" . ,max-ang-velocity)))
+      ,@(when max-velocity
+          `(("reference_velocity" . ,max-velocity)))
       ,@(if avoid-collisions-much
           `(("weight" . ,(roslisp-msg-protocol:symbol-code
                           'giskard_msgs-msg:constraint
