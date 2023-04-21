@@ -388,10 +388,11 @@
                             ))))))))
 
 (defun make-diffdrive-base-goal (root-frame tip-frame goal-pose
-                                 &key max-velocity avoid-collisions-much always-forward)
+                                 &key max-linear-velocity max-angular-velocity
+                                   avoid-collisions-much always-forward)
   (declare (type string root-frame tip-frame)
            (type cl-transforms-stamped:pose-stamped goal-pose)
-           (type (or number null) max-velocity)
+           (type (or number null) max-linear-velocity max-angular-velocity)
            (type boolean avoid-collisions-much always-forward))
   (roslisp:make-message
    'giskard_msgs-msg:constraint
@@ -406,8 +407,10 @@
           ("message" . ,(to-hash-table goal-pose))))
       ,@(when always-forward
           `(("always_forward" . T)))
-      ,@(when max-velocity
-          `(("reference_velocity" . ,max-velocity)))
+      ,@(when max-linear-velocity
+          `(("max_linear_velocity" . ,max-linear-velocity)))
+      ,@(when max-angular-velocity
+          `(("max_angular_velocity" . ,max-angular-velocity)))
       ,@(if avoid-collisions-much
           `(("weight" . ,(roslisp-msg-protocol:symbol-code
                           'giskard_msgs-msg:constraint

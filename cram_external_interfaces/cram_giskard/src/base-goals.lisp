@@ -58,7 +58,8 @@
                      (make-diffdrive-base-goal
                       cram-tf:*odom-frame* cram-tf:*robot-base-frame* pose
                       :avoid-collisions-much t
-                      :max-velocity *base-max-velocity-fast-xy*
+                      :max-linear-velocity *base-max-velocity-fast-xy*
+                      :max-angular-velocity *base-max-velocity-fast-theta*
                       :always-forward nil)
                      (make-cartesian-constraint
                       cram-tf:*odom-frame* cram-tf:*robot-base-frame* pose
