@@ -37,7 +37,7 @@
 (defparameter *gripper-joint-limit-tiny-offset* 0.00
   "In meters, not to go too close to joint limits.")
 
-(cpm:def-process-module grippers-pm (motion-designator)
+(cpm:def-process-module grippers-via-fingers-pm (motion-designator)
   (destructuring-bind (command action-type-or-position which-gripper &optional effort)
       (desig:reference motion-designator)
     (ecase command

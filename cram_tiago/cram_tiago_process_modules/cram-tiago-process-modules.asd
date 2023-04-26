@@ -46,6 +46,7 @@
                cram-joint-states
 
                teleop_tools_msgs-msg ; for grippers action client
+               control_msgs-msg      ; for grippers native action client
                cram-simple-actionlib-client
                roslisp
                roslisp-utilities)
@@ -54,5 +55,7 @@
     :components
     ((:file "package")
      (:file "grippers" :depends-on ("package"))
+     (:file "grippers-via-fingers" :depends-on ("package"))
      (:file "interface" :depends-on ("package"
-                                     "grippers"))))))
+                                     "grippers"
+                                     "grippers-via-fingers"))))))
