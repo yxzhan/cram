@@ -39,10 +39,8 @@
   (btr-belief::publish-environment-joint-state
    (btr:joint-states (btr:get-environment-object)))
   (setf desig::*designators* (tg:make-weak-hash-table :weakness :key))
-  (giskard:reset-collision-scene)
-  ;; (coe:clear-belief)
+  (coe:clear-belief)
   (btr:clear-costmap-vis-object))
-
 
 (defun eurobin-demo (&key (step 0))
   ;;urdf-proj:with-simulated-robot
