@@ -175,19 +175,20 @@
                    (desig:when (eq ?arm :right)
                      (right-poses ?right-manipulate-poses))
                    (goal ?goal)))))
-    (cpl:seq
-      (exe:perform
-       (desig:an action
-                 (type monitoring-joint-state)
-                 (gripper ?arm)))
-      (if (eq ?type :opening)
-          ;; sleep for half a second,
-          ;; maybe the action is nearly finished, so there is no need to fail
-          (cpl:sleep 1)
-          ;; if closing, then wait until the trajectory finishes, slipping is not a problem
-          (cpl:sleep 1000))
-      (cpl:fail 'common-fail:gripper-closed-completely
-                :description "Handle slipped")))
+    ;; (cpl:seq
+    ;;   (exe:perform
+    ;;    (desig:an action
+    ;;              (type monitoring-joint-state)
+    ;;              (gripper ?arm)))
+    ;;   (if (eq ?type :opening)
+    ;;       ;; sleep for half a second,
+    ;;       ;; maybe the action is nearly finished, so there is no need to fail
+    ;;       (cpl:sleep 1)
+    ;;       ;; if closing, then wait until the trajectory finishes, slipping is not a problem
+    ;;       (cpl:sleep 1000))
+    ;;   (cpl:fail 'common-fail:gripper-closed-completely
+    ;;             :description "Handle slipped"))
+    )
 
   (when (and joint-name)
     (cram-occasions-events:on-event

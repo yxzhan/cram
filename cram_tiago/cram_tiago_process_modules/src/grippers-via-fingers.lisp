@@ -180,13 +180,16 @@
                  (eq action-type-or-position :grip))
             (when (< (/ (+ (first current-states) (second current-states)) 2.0)
                      *gripper-gripped-min-position*)
-              (cpl:fail
-               (make-instance 'common-fail:gripper-closed-completely
-                 :description (format nil "Gripper ~a should have gripped,~%~
-                                          but it closed completely to ~a,~%~
-                                          which is below ~a."
-                                      arm current-states
-                                      *gripper-gripped-min-position*))))
+              (roslisp:ros-warn (tiago-pm gripper)
+                                "Gripper closed completely, nothing grasped.")
+              ;; (cpl:fail
+              ;;  (make-instance 'common-fail:gripper-closed-completely
+              ;;    :description (format nil "Gripper ~a should have gripped,~%~
+              ;;                             but it closed completely to ~a,~%~
+              ;;                             which is below ~a."
+              ;;                         arm current-states
+              ;;                         *gripper-gripped-min-position*)))
+              )
             (unless (cram-tf:values-converged current-states
                                               (list goal-state goal-state)
                                               *gripper-convergence-delta*)
