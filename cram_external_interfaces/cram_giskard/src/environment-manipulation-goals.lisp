@@ -50,16 +50,17 @@
                  ;;  *base-max-velocity-slow-xy* *base-max-velocity-slow-theta*)
                  (make-open-or-close-constraint
                   open-or-close arm handle-link joint-state)
-                 (when (eq (rob-int:get-robot-name) :tiago-dual)
-                   (make-diffdrive-base-arch-constraint hinge-point-stamped))
-                 (make-avoid-joint-limits-constraint
-                  :joint-list (cut:var-value
-                               '?joints
-                               (car
-                                (prolog:prolog
-                                 `(and (rob-int:robot ?robot-name)
-                                       (rob-int:arm-joints ?robot-name ,arm ?joints))))))
-                 (make-head-pointing-at-hand-constraint arm))
+                 ;; (when (eq (rob-int:get-robot-name) :tiago-dual)
+                 ;;   (make-diffdrive-base-arch-constraint hinge-point-stamped))
+                 ;; (make-avoid-joint-limits-constraint
+                 ;;  :joint-list (cut:var-value
+                 ;;               '?joints
+                 ;;               (car
+                 ;;                (prolog:prolog
+                 ;;                 `(and (rob-int:robot ?robot-name)
+                 ;;                       (rob-int:arm-joints ?robot-name ,arm ?joints))))))
+                 ;; (make-head-pointing-at-hand-constraint arm)
+                 )
    :collisions (make-constraints-vector
                 (make-allow-hand-collision
                  (list arm) (rob-int:get-environment-name) handle-link))))
@@ -115,11 +116,11 @@
              0.0
              (cl-transforms:origin joint-pose)))))
 
-    (when (eq (rob-int:get-robot-name) :tiago-dual)
-      (call-action
-       :action-goal (make-environment-manipulation-diffdrive-pregoal
-                     arm handle-link joint-point-stamped)
-       :action-timeout action-timeout))
+    ;; (when (eq (rob-int:get-robot-name) :tiago-dual)
+    ;;   (call-action
+    ;;    :action-goal (make-environment-manipulation-diffdrive-pregoal
+    ;;                  arm handle-link joint-point-stamped)
+    ;;    :action-timeout action-timeout))
 
     (call-action
      :action-goal (make-environment-manipulation-goal
