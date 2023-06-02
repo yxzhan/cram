@@ -113,6 +113,8 @@
    #:*x-across-z-grasp-rotation-2*
    #:*-x-across-z-grasp-rotation*
    #:*-x-across-z-grasp-rotation-2*
+   #:*-x-across-z-45-deg-grasp-rotation*
+   #:*-x-across-z+45-deg-grasp-rotation*
    #:*x-across-y-grasp-rotation*
    #:*x-across-y-30-deg-grasp-rotation*
    #:*x-across-y-24-deg-grasp-rotation*
@@ -143,4 +145,5 @@
    #:*rotation-around-y-90-list*
    #:*rotation-around-z+90-list*
    #:*rotation-around-z-90-list*
-   #:*rotation-around-z+180-list*))
+   #:*rotation-around-z+180-list*
+   #:GET-OBJECT-TYPE-ROBOT-FRAME-TILT-APPROACH-TRANSFORM))

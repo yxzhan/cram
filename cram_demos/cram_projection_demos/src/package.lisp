@@ -39,5 +39,6 @@
    #:assembly-demo
    ;; retail-demo
    #:retail-demo
+   #:eurobin-demo
    ;; setup
    *broadcast-robot-and-environment*))

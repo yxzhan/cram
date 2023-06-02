@@ -43,8 +43,10 @@
         :collision-object-a (fifth rest-args)
         :move-base (sixth rest-args)
         :prefer-base (seventh rest-args)
+        :straight-line (tenth rest-args)
         :align-planes-left (eighth rest-args)
-        :align-planes-right (ninth rest-args)))
+        :align-planes-right (ninth rest-args)
+        :precise-tracking (nth 10 rest-args))) ; that's eleventh element
       (cram-common-designators:move-joints
        (giskard:call-arm-joint-action
         :goal-configuration-left argument-1
@@ -58,14 +60,16 @@
         :arm argument-1
         :handle-link (fifth rest-args)
         :joint-angle (second rest-args)
-        :prefer-base (eighth rest-args)))
+        :prefer-base (eighth rest-args)
+        :joint-pose (nth 10 rest-args)))
       (cram-common-designators:move-arm-push
        (giskard:call-environment-manipulation-action
         :open-or-close :close
         :arm argument-1
         :handle-link (fifth rest-args)
         :joint-angle (second rest-args)
-        :prefer-base (eighth rest-args)))
+        :prefer-base (eighth rest-args)
+        :joint-pose (nth 10 rest-args)))
       (cram-common-designators:move-head
        (when argument-1
          (giskard:call-neck-action

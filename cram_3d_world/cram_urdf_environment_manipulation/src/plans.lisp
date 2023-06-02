@@ -51,6 +51,7 @@ a threshold (if T) to signal a failure.")
                                ((:right-retract-poses ?right-retract-poses))
                                joint-name
                                ((:link-name ?link-name))
+                               ((:door-joint-pose ?door-joint-pose))
                                ((:environment-name ?environment-name))
                                ((:environment-object ?environment-object))
                                ((:container-object ?container-designator))
@@ -80,8 +81,9 @@ a threshold (if T) to signal a failure.")
                  (type looking)
                  (target (desig:a location
                                   (pose ?look-pose)))))))
-  (cpl:par
-    (roslisp:ros-info (env-manip plan) "Opening gripper and reaching")
+  (;cpl:par
+   cpl:seq
+   (roslisp:ros-info (env-manip plan) "Opening gripper and reaching")
     (let ((?goal `(cpoe:gripper-joint-at ,?arm ,?gripper-opening)))
       (exe:perform
        (desig:an action
@@ -89,29 +91,32 @@ a threshold (if T) to signal a failure.")
                  (gripper ?arm)
                  (position ?gripper-opening)
                  (goal ?goal))))
-    (cpl:with-retry-counters ((reach-retries 2))
+    (cpl:with-retry-counters ((reach-retries 0))
       (cpl:with-failure-handling
           ((common-fail:manipulation-low-level-failure (e)
              (roslisp:ros-warn (env-plans manipulate)
-                               "Manipulation messed up: ~a~%Failing."
+                               "Manipulation messed up: ~a~%Retrying once then ignoring."
                                e)
              (cpl:do-retry reach-retries
-               (cpl:retry))))
+               (cpl:retry))
+             (return)))
         (let ((?goal `(cpoe:tool-frames-at ,?left-reach-poses ,?right-reach-poses)))
           (exe:perform
            (desig:an action
                      (type reaching)
                      (left-poses ?left-reach-poses)
                      (right-poses ?right-reach-poses)
+                     (application-context ?type)
                      (goal ?goal)))))))
-  (cpl:with-retry-counters ((grasp-retries 2))
+  (cpl:with-retry-counters ((grasp-retries 1))
     (cpl:with-failure-handling
         ((common-fail:manipulation-low-level-failure (e)
            (roslisp:ros-warn (env-plans manipulate)
                              "Manipulation messed up: ~a~%Failing."
                              e)
            (cpl:do-retry grasp-retries
-             (cpl:retry))))
+             (cpl:retry))
+           (return)))
       (let ((?goal `(cpoe:tool-frames-at ,?left-grasp-poses ,?right-grasp-poses)))
         (exe:perform
          (desig:an action
@@ -126,16 +131,34 @@ a threshold (if T) to signal a failure.")
   ;;;;;;;;;;;;;;;;;;;; GRIPPING ;;;;;;;;;;;;;;;;;;;;;;;;
   (roslisp:ros-info (environment-manipulation manipulate-container)
                     "Gripping")
-  ;; Gripping now both for closing and opening, as grasp pose can be funny.
-  ;; when (eq ?type :opening)
-  (exe:perform
-   (desig:an action
-             (type gripping)
-             (gripper ?arm)))
+  ;; Gripping both for closing and opening, as grasp pose can be funny.
+  ;; But for now, when gripping fails during closing, ignore the failure.
+  (if (eq ?type :opening)
+      (exe:perform
+       (desig:an action
+                 (type gripping)
+                 (gripper ?arm)))
+      (cpl:with-failure-handling
+          ((common-fail:gripper-low-level-failure (e)
+             (roslisp:ros-warn (env-plans manipulate)
+                               "Gripping didn't work: ~a.~%Ignoring..." e)
+             (return)))
+        (exe:perform
+         (desig:an action
+                   (type gripping)
+                   (gripper ?arm)))))
 
   ;;;;;;;;;;;;;;;;;;;;;; MANIPULATING ;;;;;;;;;;;;;;;;;;;;;;;
   (roslisp:ros-info (environment-manipulation manipulate-container)
                     "Manipulating")
+  (cpl:pursue
+    (cpl:with-failure-handling
+        ((common-fail:manipulation-low-level-failure (e)
+           (roslisp:ros-warn (env-plans manipulate)
+                             "Manipulation messed up: ~a~%Ignoring."
+                             e)
+           (return)
+           ))
   (let* ((?push-or-pull
            (if (eq ?type :opening)
                :pulling
@@ -148,6 +171,8 @@ a threshold (if T) to signal a failure.")
                      (object (desig:an object (name ?environment-name)))
                      (container-object ?container-designator)
                      (link ?link-name)
+                     (desig:when ?door-joint-pose
+                     (door-joint-pose ?door-joint-pose))
                      (desig:when ?absolute-distance
                        (distance ?absolute-distance))
                      (desig:when (eq ?arm :left)
@@ -213,6 +238,7 @@ a threshold (if T) to signal a failure.")
                  (type retracting)
                  (left-poses ?left-retract-poses)
                  (right-poses ?right-retract-poses)
+                 (application-context ?type)
                  (goal ?goal)))))
   (exe:perform
    (desig:an action

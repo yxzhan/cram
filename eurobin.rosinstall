@@ -1,0 +1,28 @@
+- git:
+    local-name: cram
+    uri: http://github.com/artnie/cram.git
+    version: eurobin-demo
+- git:
+    local-name: roslisp_common
+    uri: http://github.com/ros/roslisp_common.git
+    version: master
+- git:
+    local-name: giskard_msgs
+    uri: http://github.com/SemRoCo/giskard_msgs.git
+    version: v0.5.1
+- git:
+    local-name: iai_common_msgs
+    uri: http://github.com/code-iai/iai_common_msgs.git
+    version: 46d6e9b9be386de9cf5e153f489c382e0c66f74c
+- git:
+    local-name: iai_maps
+    uri: http://github.com/code-iai/iai_maps.git
+    version: AddWindows
+- git:
+    local-name: robokudo_msgs
+    uri: http://gitlab.informatik.uni-bremen.de/robokudo/robokudo_msgs.git
+    version: main
+- git:
+    local-name: iai_tiago
+    uri: http://github.com/code-iai/iai_tiago.git
+    version: main
