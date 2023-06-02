@@ -44,7 +44,4 @@
     version: master    
 - git:
     local-name: kdl_ik_services
-    uri: http://github.com/cram2/kdl_ik_service.git      
-
-    
-
+    uri: http://github.com/cram2/kdl_ik_service.git
