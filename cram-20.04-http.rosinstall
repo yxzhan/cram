@@ -18,7 +18,7 @@
 - git:
     local-name: iai_maps
     uri: http://github.com/code-iai/iai_maps.git
-    version: master
+    version: AddWindows
 - git:
     local-name: iai_robots
     uri: http://github.com/code-iai/iai_robots.git
