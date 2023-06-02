@@ -41,7 +41,6 @@
     local-name: robokudo_msgs
     uri: http://gitlab.informatik.uni-bremen.de/robokudo/robokudo_msgs.git
     version: main
-    version: master    
 - git:
     local-name: kdl_ik_services
     uri: http://github.com/cram2/kdl_ik_service.git
