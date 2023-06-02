@@ -34,4 +34,5 @@
   (:use #:common-lisp #:cram-prolog)
   (:export
    ;; interface
-   #:with-real-robot))
+   #:with-real-robot
+   #:with-mujoco-robot))

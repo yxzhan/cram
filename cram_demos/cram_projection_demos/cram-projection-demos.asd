@@ -63,6 +63,8 @@
                cram-fetch-deliver-plans ; for action desig implementations
                cram-urdf-environment-manipulation ; for action desig implementations
 
+               ;; cram-giskard ;; this is only here because the projection demo uses giskard services
+
                ;; costmaps
                cram-btr-visibility-costmap
                cram-btr-spatial-relations-costmap
@@ -94,4 +96,5 @@
                                                   "household-demo"))
      (:file "apartment-demo" :depends-on ("package" "utils"
                                                     ;; for initializing
-                                                    "household-demo"))))))
+                                                    "household-demo"))
+     (:file "eurobin-demo" :depends-on ("package" "household-demo"))))))

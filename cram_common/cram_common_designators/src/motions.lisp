@@ -101,7 +101,9 @@
                                               ?collision-object-a
                                               ?move-base ?prefer-base
                                               ?align-planes-left
-                                              ?align-planes-right))
+                                              ?align-planes-right
+                                              ?straight-line
+                                              ?precise-tracking))
     (property ?designator (:type :moving-tcp))
     (once (or (property ?designator (:left-pose ?left-pose))
               (equal ?left-pose nil)))
@@ -120,10 +122,14 @@
               (equal ?move-base nil)))
     (once (or (desig:desig-prop ?designator (:prefer-base ?prefer-base))
               (equal ?prefer-base nil)))
+    (once (or (desig:desig-prop ?designator (:straight-line ?straight-line))
+              (equal ?straight-line nil)))
     (once (or (desig:desig-prop ?designator (:align-planes-left ?align-planes-left))
               (equal ?align-planes-left nil)))
     (once (or (desig:desig-prop ?designator (:align-planes-right ?align-planes-right))
-              (equal ?align-planes-right nil))))
+              (equal ?align-planes-right nil)))
+    (once (or (desig:desig-prop ?designator (:precise-tracking ?precise-tracking))
+              (equal ?precise-tracking nil))))
 
   (<- (motion-grounding ?designator (?push-or-pull ?arm ?poses
                                                    ?joint-angle
@@ -133,7 +139,8 @@
                                                    ?collision-object-a
                                                    ?move-base ?prefer-base
                                                    ?align-planes-left
-                                                   ?align-planes-right))
+                                                   ?align-planes-right
+                                                   ?joint-pose))
     (or (and (property ?designator (:type :pushing))
              (equal ?push-or-pull move-arm-push))
         (and (property ?designator (:type :pulling))
@@ -155,6 +162,8 @@
               (equal ?move-base nil)))
     (once (or (desig:desig-prop ?designator (:prefer-base ?prefer-base))
               (equal ?prefer-base nil)))
+    (once (or (desig:desig-prop ?designator (:door-joint-pose ?joint-pose))
+              (equal ?joint-pose nil)))
     (once (or (desig:desig-prop ?designator (:align-planes-left ?align-planes-left))
               (equal ?align-planes-left nil)))
     (once (or (desig:desig-prop ?designator (:align-planes-right ?align-planes-right))
